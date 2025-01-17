@@ -1,37 +1,108 @@
-"use client"
-import FormHeader from '@/components/dashboard/FormHeader'
-import React from 'react'
-import { useForm } from 'react-hook-form';
+"use client";
+
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import FormHeader from "@/components/dashboard/FormHeader";
+import SubmitButton from "@/components/FormInputs/SubmitButton";
+import TextArea from "@/components/FormInputs/TextArea";
+import InputField from "@/components/FormInputs/InputField";
 
 type Inputs = {
-  example: string,
-  exampleRequired: string,
+  title: string;
+  description: string;
 };
+
 export default function NewCategory() {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
-  console.log(watch("example")) 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<Inputs>();
+
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    setLoading(true);
+    const baseUrl = "http://localhost:3000"; // Ensure the correct base URL
+
+    try {
+      const response = await fetch(`${baseUrl}/api/categories`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      // Check if the response is okay (status code 200-299)
+      if (response.ok) {
+        const body = await response.text();
+        if (body) {
+          const responseData = JSON.parse(body); // Parse only if the body is not empty
+          console.log("Category created:", responseData);
+          alert("Category saved successfully!");
+          reset(); // Reset form on success
+        } else {
+          console.error("Empty response body");
+        }
+      } else {
+        const errorMessage = await response.text();
+        console.error("Server error:", errorMessage);
+        alert("Error saving category.");
+      }
+    } catch (error) {
+      console.error("Error saving category:", error);
+      alert("Error saving category.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       {/* Header */}
-      <FormHeader title="New Category" href="" />
-      
+      <FormHeader title="New Category" href="/dashboard/inventory" />
+
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)} action="" className="w-full max-w-4xl p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto my-3">
-        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 " >
-        <div className="sm:col-span-2">
-                  <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
-                  <input type="text"{...register("name")} name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required=""/>
-              </div>
-              <div className="w-full">
-                  <label htmlFor="brand" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                  <input type="text" name="brand" id="brand" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Product brand" required=""/>
-              </div>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-3xl p-6 mx-auto my-6 bg-white border border-gray-200 rounded-lg shadow-lg sm:p-8 dark:bg-gray-800 dark:border-gray-700"
+      >
+        <div className="grid gap-6 sm:grid-cols-2">
+          {/* Product Name Field */}
+          <div className="sm:col-span-2">
+            <InputField
+              id="title"
+              label="Category Title"
+              isRequired
+              placeholder="Type Category Title"
+              register={register("title", { required: "Product name is required" })}
+              error={errors.title}
+            />
+          </div>
+
+          {/* Description Field */}
+          <div className="sm:col-span-2">
+            <TextArea
+              id="Category Description"
+              label="Description"
+              placeholder="Enter a detailed description (2-500 characters)"
+              register={register("description", {
+                required: "Description is required",
+              })}
+              error={errors.description}
+              rows={5}
+            />
+          </div>
         </div>
-        <div className="mt-6 sm:col-span-1">
-        <button type="submit" className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+        {/* Submit Button */}
+        <div className="mt-6">
+          <SubmitButton isLoading={loading} title="Category" />
         </div>
       </form>
     </div>
-  )
+  );
 }
