@@ -2,7 +2,7 @@
 
 import FixedHeader from "@/components/dashboard/FixedHeader"
 import OptionCard from "@/components/dashboard/OptionCard"
-import { Boxes, Component, ScrollText, Shirt } from "lucide-react"
+import { Diff, Factory, LayoutGrid, LayoutPanelTop, Scale, ScrollText, Slack } from "lucide-react"
 
 
 
@@ -14,15 +14,15 @@ export default function Inventory()  {
       link:"/dashboard/inventory/items/new",
       linkTitle:"New Item",
       enabled:true,
-      icon:Shirt,
-    },
+      icon:LayoutGrid,
+    }, 
     {
       title:"Categories",
       description:"Bundle different kits",
       link:"/dashboard/inventory/categories/new",
       linkTitle:"New Category",
       enabled:true,
-      icon:Boxes,
+      icon:LayoutPanelTop,
     },
     {
       title:"Brands",
@@ -30,7 +30,7 @@ export default function Inventory()  {
       link:"/dashboard/inventory/brands/new",
       linkTitle:"New Brands",
       enabled:true,
-      icon:ScrollText,
+      icon:Slack,
     },
     {
       title:"Warehouse",
@@ -46,7 +46,23 @@ export default function Inventory()  {
       link:"/dashboard/inventory/units/new",
       linkTitle:"New Units",
       enabled:true,
-      icon:Component,
+      icon:Scale,
+    },
+    {
+      title:"Inventory Adjustment",
+      description:"Transfer stock from the main warehouse ",
+      link:"/dashboard/inventory/adjustments/new",
+      linkTitle:"New Adjustment",
+      enabled:true,
+      icon:Diff,
+    },
+    {
+      title:"Suppliers",
+      description:"Create a new supplier ",
+      link:"/dashboard/inventory/suppliers/new",
+      linkTitle:"New Supplier",
+      enabled:true,
+      icon:Factory,
     },
   ]
     return (

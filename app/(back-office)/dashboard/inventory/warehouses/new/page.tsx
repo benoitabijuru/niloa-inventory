@@ -6,7 +6,6 @@ import FormHeader from "@/components/dashboard/FormHeader";
 import SubmitButton from "@/components/FormInputs/SubmitButton";
 import InputField from "@/components/FormInputs/InputField";
 import TextArea from "@/components/FormInputs/TextArea";
-import CountrySelector from "@/components/FormInputs/CountrySelector";
 import { SelectorInput } from "@/components/FormInputs/SelectorInput";
 
 type Inputs = {
@@ -33,11 +32,10 @@ export default function NewWarehouse() {
     reset,
   } = useForm<Inputs>();
   const [loading, setLoading] = useState(false);
-  const [location, setLocation] = useState<string>("");
+
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const finalData = { ...data, location };
-    console.log(finalData);
+    
     setLoading(true);
 
 
@@ -47,7 +45,7 @@ export default function NewWarehouse() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(finalData),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
@@ -88,12 +86,14 @@ export default function NewWarehouse() {
           
 
           {/* Country Selector */}
-          <CountrySelector
+          <InputField
             id="location"
             label="Warehouse Location"
-            placeholder="Select a country"
+            placeholder="Select a warehouse location"
+            register={register("location", { required: "Location is required" })}
             error={errors.location}
-            onChange={setLocation} // Sync location with form
+            isRequired
+             // Sync location with form
           />
 
           {/* Warehouse Type */}
@@ -118,7 +118,7 @@ export default function NewWarehouse() {
 
         {/* Submit Button */}
         <div className="mt-6">
-          <SubmitButton isLoading={loading} title="Save Warehouse" />
+          <SubmitButton isLoading={loading} title="Warehouse" />
         </div>
       </form>
     </div>

@@ -1,18 +1,22 @@
+import db from "@/prisma/seed";
 import { NextResponse } from "next/server";
 
 // Define the type for the request body
-interface UnitsRequestBody {
-  title: string;
-  abbreviation: string;
-}
+
 
 export async function POST(request: Request) {
   try {
     // Parse the JSON body of the request
-    const body: UnitsRequestBody = await request.json();
-    const { title, abbreviation } = body;
+    const { title, abbreviation }  = await request.json();
+   
+    const unit = await db.unit.create({
+      data:{ 
+        title,
+        abbreviation
+      },
+    });
     
-
+ console.log(unit)
     // Ensure we have valid data
     if (!title || !abbreviation) {
       return NextResponse.json(
@@ -22,7 +26,7 @@ export async function POST(request: Request) {
     }
 
     // Create a category object from the request data
-    const unit = { title, abbreviation };
+    
 
     // Return a JSON response with the created category
     return NextResponse.json(unit, { status: 201 }); // 201 Created

@@ -1,17 +1,16 @@
+import db from "@/prisma/seed";
 import { NextResponse } from "next/server";
-
-// Define the type for the request body
-interface BrandsRequestBody {
-  name: string;
-  
-}
 
 export async function POST(request: Request) {
   try {
     // Parse the JSON body of the request
-    const body: BrandsRequestBody = await request.json();
-    const { name } = body;
+    const { name } =  await request.json();
     
+    const brand = await db.brand.create({
+      data:{ 
+        name,
+      },
+    });
 
     // Ensure we have valid data
     if (!name) {
@@ -22,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     // Create a category object from the request data
-    const brand = { name };
+
 
     // Return a JSON response with the created category
     return NextResponse.json(brand, { status: 201 }); // 201 Created

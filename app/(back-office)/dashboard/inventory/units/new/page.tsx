@@ -85,7 +85,7 @@ export default function NewUnits() {
           {/* Description Field */}
           <div className="sm:col-span-2 w-full">
             <InputField
-              id="Unit Abbreviation"
+              id="abbreviation"
               label="Abbreviation"
               isRequired={false}
               placeholder="Type Unit Abbreviation)"

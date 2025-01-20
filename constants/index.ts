@@ -1,3 +1,5 @@
+import { Minus, Plus } from "lucide-react";
+
 export const navLinks = [{
     title:"Dashboard",
     href:"/dashboard/home/overview"
@@ -70,7 +72,7 @@ export const inventoryLinks =[
     },
     {
        title:"Inventory Adjustments",
-       href:""
+       href:"/dashboard/inventory/adjustments/new"
     },
     {
       title:"Brands",
@@ -298,4 +300,15 @@ export const brands = [
    { label: "Panasonic", value: "panasonic" },
  ];
  
- 
+ export const tabs =[
+     {
+       title:"Add Stock",
+       icon:Plus,
+       form:"add"
+     },
+     {
+       title:"Transfer Stock",
+       icon:Minus,
+       form:"transfer"
+     },
+    ]

@@ -1,12 +1,13 @@
-import type { Config } from "tailwindcss";
-
-const config = {
+import { withUt } from "uploadthing/tw";
+ 
+export default withUt({
+  // Your existing Tailwind config
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx,mdx}",
     "./constants/**/*.{ts,tsx}",
   ],
   prefix: "",
@@ -154,6 +155,9 @@ const config = {
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require('@tailwindcss/forms'), require("tailwindcss-animate"),require('@tailwindcss/forms')],
-} satisfies Config;
 
-export default config;
+ 
+});
+
+
+  

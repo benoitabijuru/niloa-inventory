@@ -36,3 +36,4 @@ declare type Inputs = {
     supplierId: string;
     imageUrl:string
   }
+

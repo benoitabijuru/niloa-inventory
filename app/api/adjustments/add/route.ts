@@ -4,37 +4,37 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     // Parse the JSON body of the request
-    const { name, location, type, description }  = await request.json();
-   
-    const warehouse = await db.warehouse.create({
+    const { addStockQty, warehouseId,notes, referenceNumber} = await request.json();
+    
+    const addStockAdjustment = await db.addStockAdjustment.create({
       data:{ 
-        name,
-        location,
-        description,
-        warehouseType:type
+        addStockQty,
+        warehouseId,
+        notes,
+        referenceNumber
       },
     });
+
     
 
     // Ensure we have valid data
-    if (!name || !location || !type || !description) {
+    if (!addStockQty || !warehouseId || !notes || !referenceNumber) {
       return NextResponse.json(
-        { message: "Fill this field required" },
+        { message: "First Add Stock" },
         { status: 400 } // Bad Request
       );
     }
 
-    // Create a category object from the request data
   
     // Return a JSON response with the created category
-    return NextResponse.json(warehouse, { status: 201 }); // 201 Created
+    return NextResponse.json(addStockAdjustment, { status: 201 }); // 201 Created
 
   } catch (error) {
     console.error(error);
 
     // Return a 500 error response if something goes wrong
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Unknown error', message: "Failed to create a Warehouse" },
+      { error: error instanceof Error ? error.message : 'Unknown error', message: "Failed to create a Adjustments" },
       { status: 500 }
     );
   }
